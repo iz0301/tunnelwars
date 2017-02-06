@@ -1,0 +1,38 @@
+package com.zachmanndevelopment.tunnelwars.physics;
+
+import com.zachmanndevelopment.tunnelwars.geometry.Point;
+import com.zachmanndevelopment.tunnelwars.math.Vector;
+
+/**
+ * A very simple class to make a force. Force is a vector and a time unit
+ * @author Isaac Zachmann
+ *
+ */
+public class Force {
+	
+	/**
+	 * The force vector
+	 */
+	Vector force;
+	
+	/**
+	 * The time in milliseconds the force should be applied for
+	 */
+	int time;
+	
+	/**
+	 * The position reletive to the center of the body to apply the force
+	 */
+	Point position;
+	
+	/**
+	 * Creates a new force 
+	 * @param force the vector of the force to be applied
+	 * @param time the time, in milliseconds, for the force to be applied for
+	 */
+	public Force(Vector force, int time, Point position){
+		this.force = force;
+		this.time = time;
+		this.position = position;
+	}
+}

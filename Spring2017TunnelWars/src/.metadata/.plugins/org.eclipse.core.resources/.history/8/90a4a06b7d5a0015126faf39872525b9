@@ -1,0 +1,71 @@
+package com.zachmanndevelopment.tunnelwars.physics;
+
+import java.util.ArrayList;
+
+import com.zachmanndevelopment.tunnelwars.math.Vector;
+
+/**
+ * A class for a physics engine/world 
+ * @author Isaac Zachmann
+ *
+ */
+public class PhysicsEngine {
+	
+	/**
+	 * All the physics bodies in this physics world
+	 */
+	ArrayList<PhysicsBody> bodies = new ArrayList<PhysicsBody>();
+	
+	/**
+	 * The time of the last physics update
+	 */
+	private long lastTime;
+	
+	/**
+	 * Creates a new physics engine/world
+	 */
+	public PhysicsEngine(){
+		
+	}
+	
+	/**
+	 * Adds the specified physics body to this physics world
+	 * @param body
+	 */
+	public void addBody(PhysicsBody body){
+		bodies.add(body);
+		
+	}
+	
+	/**
+	 * Updates all physics for this engine. Should be called every update to move all physics bodies, calculate forces, etc.
+	 * Note: should probably change from Euler Integration to Velocity Verlet
+	 * @return the time, in milliseconds, between this update and the last update
+	 */
+	public long physicsUpdate(){
+		int timeBetween = (int) (System.currentTimeMillis() - lastTime);
+
+		if(timeBetween > 0){
+		for(PhysicsBody body : bodies){
+			//F=ma...a = F/m = F*1/m
+			Vector acceleration = Vector.multiplyVectorByScalar(body.getNetForce(), 1/body.mass);
+			System.out.println("acceleration: "+acceleration.getX()+","+acceleration.getY()+","+acceleration.getZ());
+			//velocity = oldVelocity + acceleration * time
+			body.linearVelocity = Vector.addVectors(body.linearVelocity, 
+					Vector.multiplyVectorByScalar(acceleration, timeBetween/1000));
+			//position = velocity * time
+			body.move(Vector.multiplyVectorByScalar(body.linearVelocity, timeBetween/1000));
+			
+			for(Object o : body.forces.toArray()){
+				Force force = (Force) o;
+				force.time -= timeBetween;
+				if(force.time <= 0){
+					body.forces.remove(force);
+				}
+			}
+		}
+		}
+		lastTime = System.currentTimeMillis();
+		return timeBetween;
+	}
+}

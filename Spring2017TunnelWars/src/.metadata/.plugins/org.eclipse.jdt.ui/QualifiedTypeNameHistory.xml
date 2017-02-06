@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.jogamp.opengl.GLCapabilities"/>
+<fullyQualifiedTypeName name="com.jogamp.newt.NewtFactory"/>
+<fullyQualifiedTypeName name="com.jogamp.newt.Window"/>
+<fullyQualifiedTypeName name="com.jogamp.newt.event.KeyListener"/>
+<fullyQualifiedTypeName name="java.util.EventListener"/>
+<fullyQualifiedTypeName name="com.jogamp.newt.event.WindowListener"/>
+<fullyQualifiedTypeName name="com.jogamp.opengl.GLAutoDrawable"/>
+<fullyQualifiedTypeName name="com.jogamp.nativewindow.util.Dimension"/>
+<fullyQualifiedTypeName name="com.jogamp.opengl.GLEventListener"/>
+<fullyQualifiedTypeName name="com.jogamp.opengl.awt.GLJPanel"/>
+<fullyQualifiedTypeName name="java.awt.Dimension"/>
+<fullyQualifiedTypeName name="java.awt.event.KeyListener"/>
+<fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
+<fullyQualifiedTypeName name="com.jogamp.nativewindow.util.Point"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.Vector"/>
+<fullyQualifiedTypeName name="com.zachmanndevelopment.tunnelwars.geometry.Face"/>
+<fullyQualifiedTypeName name="com.zachmanndevelopment.tunnelwars.math.Direction"/>
+<fullyQualifiedTypeName name="com.zachmanndevelopment.tunnelwars.physics.PhysicsBody"/>
+<fullyQualifiedTypeName name="com.zachmanndevelopment.tunnelwars.graphics.Setup"/>
+<fullyQualifiedTypeName name="com.zachmanndevelopment.tunnelwars.math.Vector"/>
+<fullyQualifiedTypeName name="com.jogamp.opengl.math.Ray"/>
+<fullyQualifiedTypeName name="com.zachmanndevelopment.tunnelwars.math.Ray"/>
+<fullyQualifiedTypeName name="com.zachmanndevelopment.tunnelwars.geometry.Point"/>
+</qualifiedTypeNameHistroy>

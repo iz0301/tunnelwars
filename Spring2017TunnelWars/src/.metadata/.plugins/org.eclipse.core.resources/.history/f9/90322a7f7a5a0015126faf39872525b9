@@ -1,0 +1,194 @@
+package com.zachmanndevelopment.tunnelwars.physics;
+
+import java.util.ArrayList;
+
+import com.zachmanndevelopment.tunnelwars.geometry.Point;
+import com.zachmanndevelopment.tunnelwars.math.Vector;
+
+/**
+ * Defines a class for creating 3D rigid structures that will physically interact.
+ * Currently only works for completely symmetrical non-jointed structures
+ * @author Isaac Zachmann
+ *
+ */
+public class PhysicsBody {
+	
+	/**
+	 * All the faces that make up this physics body
+	 */
+	ArrayList<PhysicsFace> faces = new ArrayList<PhysicsFace>();
+	
+	/**
+	 * All the forces acting upon this body
+	 */
+	ArrayList<Force> forces = new ArrayList<Force>();
+	
+	/**
+	 * The mass in kilograms of the physics body
+	 */
+	double mass;
+	
+	/**
+	 * Defines if this physics body is a "floor" if it is it will not be affected by gravity or move due to other forces
+	 */
+	boolean floor;
+	
+	/**
+	 * The current linear velocity of the physics body
+	 */
+	Vector linearVelocity;
+	
+	/**
+	 * The current angular velocity of the physics body, represented by the x-component as roll, the y-component as pitch, and the z-component as yaw.
+	 */
+	Vector angularVelocity;
+	
+	/**
+	 * Creates a physics body using the specified faces
+	 * @param faces All the faces to add to the physics body
+	 */
+	public PhysicsBody(PhysicsFace faces[]){
+		for(PhysicsFace face : faces){
+			this.faces.add(face);
+		}
+		
+		//Set default mass
+		double maxX = 0, maxY = 0, maxZ = 0, minX = 0, minY = 0, minZ = 0;
+		for(PhysicsFace face : this.faces){
+			for(Point point : face.getPoints()){
+				if(point.x < minX){
+					minX = point.x;
+				} else if (point.x > maxX){
+					maxX = point.x;
+				}
+				
+				if(point.y < minY){
+					minY = point.y;
+				} else if (point.y > maxY){
+					maxY = point.y;
+				}
+				
+				if(point.z < minZ){
+					minZ = point.z;
+				} else if (point.z > maxZ){
+					maxZ = point.z;
+				}
+			}
+		}
+		mass = 10*(maxX-minX)*(maxY-minY)*(maxZ-minZ);
+		
+		floor = false;
+	}
+	
+	/**
+	 * Applies a constant force to the body
+	 * @param newForce the force (in newtons) to be applied to the body
+	 */
+	public void applyForce(Force newForce){
+		forces.add(newForce);
+	}
+	
+	/**
+	 * Sets the velocity in m/s (meters per second) of the physics body to the velocity represented by the vector.
+	 * @param vel The vector that represents the velocity
+	 */
+	public void setLinearVelocity(Vector vel){
+		linearVelocity = vel;
+	}
+	
+	/**
+	 * Sets the angular velocity in rad/s (radians per second) of the physics body. The roll is represented by the 
+	 * x-component of the vector, pitch by the y-component, and yaw by the z-component
+	 * @param vel The vector that represent angular velocity. 
+	 */
+	public void setAngularVelocity(Vector vel){
+		angularVelocity = vel;
+	}
+	
+	/**
+	 * Sets the position of the middle of the physics body
+	 * @param pos The new middle position
+	 */
+	public void setPosition(Point pos){
+		move(new Vector(getMiddlePoint(), pos));
+	}
+	
+	/**
+	 * Moves the body by the specified vector direction and magnitude
+	 * @param change the vector to move the body
+	 */
+	public void move(Vector change){
+		for(PhysicsFace face : faces){
+			for(Point point : face.getPoints()){
+				point.x += change.getX();
+				point.y += change.getY();
+				point.z += change.getZ();
+			}
+		}
+	}
+	
+	/**
+	 * Finds and returns the total net force on the body
+	 * @return the net force acting upon the physics body
+	 */
+	public Vector getNetForce(){
+		Vector totalForce = new Vector(0, 0, 0);
+		for(Force force : forces){
+			totalForce = Vector.addVectors(force.force, totalForce);
+		}
+		return totalForce;
+	}
+	
+	/**
+	 * Should calculate and return the center of mass if the object has consistent density, but doesn't.
+	 * Should work for symmetrical objects (cubes)
+	 * Note: Probably doesn't work to well because all this does is takes the average of the x's, y's and z's. 
+	 * We should fix this using TRIPLE INTEGRATION!
+	 * @return The center of mass
+	 */
+	public Point getCenterOfMass(){
+		double xTotal = 0, 
+				yTotal = 0,
+				zTotal = 0;
+		int totalPoints = 0;
+		for(PhysicsFace face : faces){
+			for(Point point : face.getPoints()){
+				totalPoints++;
+				xTotal += point.x;
+				yTotal += point.y;
+				zTotal += point.z;
+			}
+		}
+		return new Point(xTotal/totalPoints, yTotal/totalPoints, zTotal/totalPoints);
+	}
+	
+	/**
+	 * Gets the middle point of the physics body. Calculated by the middle of the largest and smallest coordinates.
+	 * @return The middle of this physics body
+	 */
+	private Point getMiddlePoint(){
+		double maxX = 0, maxY = 0, maxZ = 0, minX = 0, minY = 0, minZ = 0;
+		for(PhysicsFace face : this.faces){
+			for(Point point : face.getPoints()){
+				if(point.x < minX){
+					minX = point.x;
+				} else if (point.x > maxX){
+					maxX = point.x;
+				}
+				
+				if(point.y < minY){
+					minY = point.y;
+				} else if (point.y > maxY){
+					maxY = point.y;
+				}
+				
+				if(point.z < minZ){
+					minZ = point.z;
+				} else if (point.z > maxZ){
+					maxZ = point.z;
+				}
+			}
+		}
+		return Point.midpoint(new Point(maxX, maxY, maxZ), new Point(minX, minY, minZ));
+	}
+}

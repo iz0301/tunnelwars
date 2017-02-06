@@ -1,0 +1,5 @@
+package com.zachmanndevelopment.tunnelwars.physics;
+
+public class CollisionDetection {
+
+}

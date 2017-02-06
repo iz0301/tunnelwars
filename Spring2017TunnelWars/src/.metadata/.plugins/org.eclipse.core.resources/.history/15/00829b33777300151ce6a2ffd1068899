@@ -1,0 +1,21 @@
+package com.zachmanndevelopment.tunnelwars.physics;
+
+import java.util.ArrayList;
+
+/**
+ * A class to contain static methods for collision detection
+ * @author Isaac Zachmann
+ *
+ */
+public class CollisionDetection {
+	
+	/**
+	 * Runs first and fastest stage of collision detection.
+	 * @param bodies the physics bodies to test
+	 * @return the body boxes of objects that could be colliding.
+	 */
+	public static ArrayList<BodyBox> stage1(ArrayList<PhysicsBody> bodies){
+		ArrayList<BodyBox> boxes = new ArrayList<BodyBox>();
+		return bodies;
+	}
+}

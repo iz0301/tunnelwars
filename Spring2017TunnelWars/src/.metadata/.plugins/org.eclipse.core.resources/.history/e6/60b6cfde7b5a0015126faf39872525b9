@@ -1,0 +1,38 @@
+package com.zachmanndevelopment.tunnelwars.main;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
+
+import com.zachmanndevelopment.tunnelwars.geometry.Point;
+import com.zachmanndevelopment.tunnelwars.geometry.TestCube;
+import com.zachmanndevelopment.tunnelwars.math.Vector;
+import com.zachmanndevelopment.tunnelwars.physics.Force;
+import com.zachmanndevelopment.tunnelwars.physics.PhysicsEngine;
+
+public class TunnelWars {
+
+	public static void main(String[] args) {
+		TestCube cube = new TestCube(new Point(0,0,0), 5);
+		cube.physicsBody.mass = 100;
+		PhysicsEngine engine = new PhysicsEngine();
+		engine.addBody(cube.physicsBody);
+		cube.physicsBody.applyForce(new Force(new Vector(2,3,4), 1, new Point(0,0,0)));
+		Timer t = new Timer(1000, new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				engine.physicsUpdate();
+				cube.location = cube.physicsBody.getMiddlePoint();
+				System.out.println(cube.location.x+","
+						+cube.location.y+","
+						+cube.location.z);
+
+			}
+		});
+		t.start();
+		while(true){
+			
+		}
+	}
+}

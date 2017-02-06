@@ -1,0 +1,24 @@
+package com.zachmanndevelopment.tunnelwars.main;
+
+import com.zachmanndevelopment.tunnelwars.geometry.Point;
+import com.zachmanndevelopment.tunnelwars.geometry.TestCube;
+import com.zachmanndevelopment.tunnelwars.math.Vector;
+import com.zachmanndevelopment.tunnelwars.physics.Force;
+import com.zachmanndevelopment.tunnelwars.physics.PhysicsEngine;
+
+public class TunnelWars {
+
+	public static void main(String[] args) {
+		TestCube cube = new TestCube(new Point(0,0,0), 5);
+		PhysicsEngine engine = new PhysicsEngine();
+		engine.addBody(cube.physicsBody);
+		cube.physicsBody.applyForce(new Force(new Vector(2,3,4), 1, new Point(0,0,0)));
+		while(true){
+			engine.physicsUpdate();
+			cube.location = cube.physicsBody.getMiddlePoint();
+			System.out.println(cube.location.x+","
+					+cube.location.y+","
+					+cube.location.z);
+		}
+	}
+}

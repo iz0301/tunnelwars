@@ -1,0 +1,18 @@
+package com.zachmanndevelopment.tunnelwars.main;
+
+import com.zachmanndevelopment.tunnelwars.geometry.Point;
+import com.zachmanndevelopment.tunnelwars.geometry.TestCube;
+import com.zachmanndevelopment.tunnelwars.physics.PhysicsEngine;
+
+public class TunnelWars {
+
+	public static void main(String[] args) {
+		TestCube cube = new TestCube(new Point(0,0,0), 5);
+		PhysicsEngine engine = new PhysicsEngine();
+		while(true){
+			System.out.println(cube.physicsBody.getCenterOfMass().x+","
+					+cube.physicsBody.getCenterOfMass().y+","
+					+cube.physicsBody.getCenterOfMass().z);
+		}
+	}
+}
