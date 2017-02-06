@@ -9,9 +9,9 @@ import geometry.Point;
  */
 public class Intersection {
 	/**
-	 * The point at which the bodies are intersecting
+	 * The points at which the bodies are intersecting
 	 */
-	public Point intersection;
+	public Point[] intersections;
 	
 	/**
 	 * The first intersecting body
@@ -25,12 +25,12 @@ public class Intersection {
 	
 	/**
 	 * Creates an intersection from a point and two bodies
-	 * @param intersectionPoint the point at which the bodies are intersecting
+	 * @param intersectionPoints the points at which the bodies are intersecting
 	 * @param body1 the first body intersecting
 	 * @param body2 the second body intersecting
 	 */
-	public Intersection(Point intersectionPoint, PhysicsBody body1, PhysicsBody body2){
-		intersection = intersectionPoint;
+	public Intersection(Point[] intersectionPoints, PhysicsBody body1, PhysicsBody body2){
+		intersections = intersectionPoints;
 		this.body1 = body1;
 		this.body2 = body2;
 	}
