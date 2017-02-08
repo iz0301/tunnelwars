@@ -88,7 +88,7 @@ public class PhysicsEngine {
 				}
 			}
 
-			for(Intersection intersection : CollisionDetection.stage3(CollisionDetection.stage2(CollisionDetection.stage1(bodies)))){
+			for(BodyIntersection intersection : CollisionDetection.stage3(CollisionDetection.stage2(CollisionDetection.stage1(bodies)))){
 				//APPLY FORCES FROM INTERSECTION
 			}
 		}
