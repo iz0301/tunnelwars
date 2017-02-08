@@ -1,5 +1,6 @@
 package geometry;
 
+import physics.FaceIntersection;
 import math.Ray;
 import math.Vector;
 
@@ -86,7 +87,7 @@ public class Face {
 	 * @param face2 the second face to test
 	 * @return an array of Points where the faces intersect, null if the faces do not intersect
 	 */
-	public static Point[] doFacesIntersect(Face face1, Face face2){
+	public static FaceIntersection doFacesIntersect(Face face1, Face face2){
 		//Point[] result = new Point[3];
 		Ray side1a = new Ray(face1.point1, new Vector(face1.point1, face1.point2));
 		Ray side2a = new Ray(face1.point2, new Vector(face1.point2, face1.point3));
