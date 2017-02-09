@@ -31,4 +31,25 @@ public class PhysicsFaceIntersection extends FaceIntersection {
 		this.face1 = f1;
 		this.face2 = f2;
 	}
+	
+	/**
+	 * Creates the PhysicsFaceIntersection from the more generic type FaceIntersection.
+	 * If the faces in faceIntersection are already physics faces, then face1 and face2 of the PhysicsFaceIntersection will be these
+	 * faces. If the faces in faceIntersection are generic faces and cannot be casted to PhysicsFace, then the PhysicsFaces will be
+	 * created from the faces in faceIntersection with default physics properties. 
+	 * @param faceIntersection the generic FaceIntersection to create a PhysicsFaceIntersection out of.
+	 */
+	public PhysicsFaceIntersection(FaceIntersection faceIntersection) {
+		
+	}
+	
+	/**
+	 * See the constructor. Converts FaceIntersections to PhysicsFaceIntersections. 
+	 * @param faceIntersections the array of FaceIntersections to convert to PhysicsFaceIntersections.
+	 * @return the array of PhysicsFaceIntersections created forom the FaceIntersections
+	 * @see {@link #PhysicsFaceIntersection(FaceIntersection)}
+	 */
+	public static PhysicsFaceIntersection[] constructPhysicFaces(FaceIntersection[] faceIntersections){
+		for()
+	}
 }

@@ -11,7 +11,7 @@ public class FaceIntersection {
 	/**
 	 * The points at which the faces intersect
 	 */
-	Point[] points;
+	public Point[] points;
 	
 	/**
 	 * The first face of the intersection
