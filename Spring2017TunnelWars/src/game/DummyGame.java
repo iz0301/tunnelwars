@@ -72,18 +72,6 @@ public class DummyGame implements IGameLogic {
 		
 
 		gameItems = new GameItem[] { gameItem, gameItem1, gameItem2, gameItem3, torusItem };
-		new Thread(){
-			@Override
-			public void run(){
-				long oldTime =  System.currentTimeMillis();
-				while (true){
-					if((System.currentTimeMillis() - oldTime > 500)){
-						gameItems[0].setPosition((float)(gameItems[0].getPosition().x+.001), (float)(gameItems[0].getPosition().y+.001), (float)(gameItems[0].getPosition().z-.001));
-						oldTime = System.currentTimeMillis();
-					}
-				}
-			}
-		}.start();
 	}
 
 	/**
