@@ -72,6 +72,7 @@ public class DummyGame implements IGameLogic {
 		
 
 		gameItems = new GameItem[] { gameItem, gameItem1, gameItem2, gameItem3, torusItem };
+		
 	}
 
 	/**
