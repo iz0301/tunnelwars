@@ -97,6 +97,11 @@ public class Vector {
 		return zComponent;
 	}
 	
+	@Override
+	public boolean equals(Object vec){
+		return Vector.areVectorsEqual(this, (Vector)(vec));
+	}
+	
 	/**
 	 * Returns a new vector with the specified components.
 	 * @param x the x-component of the vector

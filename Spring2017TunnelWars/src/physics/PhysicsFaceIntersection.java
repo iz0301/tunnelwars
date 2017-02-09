@@ -1,5 +1,6 @@
 package physics;
 
+import geometry.FaceIntersection;
 import geometry.Point;
 
 /**
@@ -12,12 +13,12 @@ public class PhysicsFaceIntersection extends FaceIntersection {
 	/**
 	 * The first face of the intersection
 	 */
-	PhysicsFace face1;
+	public PhysicsFace face1;
 	
 	/**
 	 * The second face of the intersection
 	 */
-	PhysicsFace face2;
+	public PhysicsFace face2;
 	
 	/**
 	 * Creates a new face intersection
@@ -27,7 +28,6 @@ public class PhysicsFaceIntersection extends FaceIntersection {
 	 */
 	public PhysicsFaceIntersection(Point[] points, PhysicsFace f1, PhysicsFace f2){
 		super(points, f1, f2);
-		this.points = points;
 		this.face1 = f1;
 		this.face2 = f2;
 	}

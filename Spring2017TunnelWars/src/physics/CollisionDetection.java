@@ -1,6 +1,7 @@
 package physics;
 
 import geometry.Face;
+import geometry.FaceIntersection;
 import geometry.Point;
 
 import java.util.ArrayList;
@@ -76,7 +77,7 @@ public class CollisionDetection {
 					}
 				}
 			}
-			intersections.add(new BodyIntersection(intersectingFaces.toArray(), null, null));
+			intersections.add(new BodyIntersection(intersectingFaces.toArray(new PhysicsFaceIntersection[0]), b[0].getBody(), b[1].getBody()));
 		}
 		return intersections;
 	}

@@ -1,6 +1,5 @@
 package geometry;
 
-import physics.FaceIntersection;
 import math.Ray;
 import math.Vector;
 
@@ -83,6 +82,7 @@ public class Face {
 	 * Tests to see if the two specified faces intersect and returns the points at which they intersect.
 	 * It returns points where the edge of one face intersects the face, edge, or vertex of the other.
 	 * Does NOT return the line on which the intersection occurs, but this line could be calculated if two points are returned.
+	 * NOTE: needs to be tested, rounded before but changed back to 
 	 * @param face1 the first face to test
 	 * @param face2 the second face to test
 	 * @return an array of Points where the faces intersect, null if the faces do not intersect
@@ -100,7 +100,7 @@ public class Face {
 		Point[] intersections = new Point[0];
 		Point testPoint = null;
 		if((testPoint = side1a.intersectsFace(face2)) != null ){	
-			if(Point.isPointBetween(face1.point1, face1.point2, testPoint)){
+			if(Point.distance(face1.point1, testPoint) <= Point.distance(face1.point1, face1.point2)){
 				//Probably better way to add to end of array
 				Point[] old = intersections;
 				intersections = new Point[intersections.length + 1];
@@ -111,7 +111,7 @@ public class Face {
 			}
 		}
 		if((testPoint = side2a.intersectsFace(face2)) != null ){
-			if(Point.isPointBetween(face1.point2, face1.point3, testPoint)){
+			if(Point.distance(face1.point2, testPoint) <= Point.distance(face1.point2, face1.point3)){
 				Point[] old = intersections;
 				intersections = new Point[intersections.length + 1];
 				for(int i = 0; i < old.length; i++){
@@ -121,7 +121,7 @@ public class Face {
 			}
 		}
 		if((testPoint = side3a.intersectsFace(face2)) != null ){
-			if(Point.isPointBetween(face1.point3, face1.point1, testPoint)){
+			if(Point.distance(face1.point3, testPoint) <= Point.distance(face1.point3, face1.point1)){
 				Point[] old = intersections;
 				intersections = new Point[intersections.length + 1];
 				for(int i = 0; i < old.length; i++){
@@ -132,7 +132,7 @@ public class Face {
 		}
 
 		if((testPoint = side1b.intersectsFace(face1)) != null ){
-			if(Point.isPointBetween(face2.point1, face2.point2, testPoint)){
+			if(Point.distance(face2.point1, testPoint) <= Point.distance(face2.point1, face2.point2)){
 				Point[] old = intersections;
 				intersections = new Point[intersections.length + 1];
 				for(int i = 0; i < old.length; i++){
@@ -142,7 +142,7 @@ public class Face {
 			}
 		}
 		if((testPoint = side2b.intersectsFace(face1)) != null ){
-			if(Point.isPointBetween(face2.point2, face2.point3, testPoint)){
+			if(Point.distance(face2.point2, testPoint) <= Point.distance(face2.point2, face2.point3)){
 				Point[] old = intersections;
 				intersections = new Point[intersections.length + 1];
 				for(int i = 0; i < old.length; i++){
@@ -152,7 +152,7 @@ public class Face {
 			}
 		}
 		if((testPoint = side3b.intersectsFace(face1)) != null ){
-			if(Point.isPointBetween(face2.point3, face2.point1, testPoint)){
+			if(Point.distance(face2.point3, testPoint) <= Point.distance(face2.point3, face2.point1)){
 				Point[] old = intersections;
 				intersections = new Point[intersections.length + 1];
 				for(int i = 0; i < old.length; i++){
@@ -163,12 +163,14 @@ public class Face {
 		}
 		if(intersections.length > 0){
 			//Remove repeats... Also probably a lot better way to do this. ArrayLists would be easier but should run a speed comparison b4 implementing
+			//Also might not need necessary for real physics. 
 			for(int i = 0; i < intersections.length; i++){
 				for(int i2 = 0; i2 < intersections.length; i2++){
-					if(((Math.abs(intersections[i].x - intersections[i2].x))<Point.ERROR) && 
+					/*if(((Math.abs(intersections[i].x - intersections[i2].x))<Point.ERROR) && 
 							(Math.abs(intersections[i].y - intersections[i2].y)<Point.ERROR) && 
 							(Math.abs(intersections[i].z - intersections[i2].z)<Point.ERROR) && 
-							i != i2){
+							i != i2){*/
+					if(intersections[i].equals(intersections[i2])){
 						Point[] old = intersections;
 						intersections = new Point[intersections.length-1];
 						int oc = 0;
@@ -185,7 +187,7 @@ public class Face {
 					}
 				}
 			}
-			return intersections;
+			return new FaceIntersection(intersections, face1, face2);
 		} else {
 			return null;
 		}

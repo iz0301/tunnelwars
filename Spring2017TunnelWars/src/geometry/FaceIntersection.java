@@ -1,7 +1,5 @@
-package physics;
+package geometry;
 
-import geometry.Face;
-import geometry.Point;
 
 /**
  * A class for face intersections. Contains information such as the faces intersecting and the points of intersection.
@@ -18,12 +16,12 @@ public class FaceIntersection {
 	/**
 	 * The first face of the intersection
 	 */
-	Face face1;
+	public Face face1;
 	
 	/**
 	 * The second face of the intersection
 	 */
-	Face face2;
+	public Face face2;
 	
 	/**
 	 * Creates a new face intersection

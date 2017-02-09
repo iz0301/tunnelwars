@@ -11,7 +11,7 @@ public class BodyIntersection {
 	/**
 	 * The points at which the bodies are intersecting
 	 */
-	public Point[] intersections;
+	public PhysicsFaceIntersection[] intersections;
 	
 	/**
 	 * The first intersecting body
@@ -29,8 +29,8 @@ public class BodyIntersection {
 	 * @param body1 the first body intersecting
 	 * @param body2 the second body intersecting
 	 */
-	public BodyIntersection(PhysicsFaceIntersection[] faces, PhysicsBody body1, PhysicsBody body2){
-		intersections = faces;
+	public BodyIntersection(PhysicsFaceIntersection[] intersections, PhysicsBody body1, PhysicsBody body2){
+		this.intersections = intersections;
 		this.body1 = body1;
 		this.body2 = body2;
 	}

@@ -129,13 +129,14 @@ public class Point {
 	/**
 	 * Fraction of error to assume a point is still collinear with the other two in the isPointBetween function.
 	 */
-	static float ERROR = 0.000001f;
+	private static float ERROR = 0.000001f;
 
 	/**
 	 * Calculates if p3 is collinear and lies on the segment created by p1 and p2. If it is, return true, if not return false.
 	 * Returns true if testPoint is the same as either p1 or p2.
 	 * NOTE: Rounding problems made it so that instead of testing exactly it will still return true even if the point is a little bit off
-	 * this error amount of error is percent off for each of the components of vectors generated.
+	 * this error amount of error is percent off for each of the components of vectors generated. 
+	 * NOTE: new way of doing face intersections may not need this rounding.
 	 * @param p1 The first point of the line segment
 	 * @param p2 The second point of the line segment
 	 * @param testPoint to point to test if it lies on the line segment
