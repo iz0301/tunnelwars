@@ -1,5 +1,9 @@
 package physics;
 
+import geometry.FaceIntersection;
+import geometry.Point;
+import math.Vector;
+
 
 /**
  * Class for collision detection. Holds information once a collision is verified such as point of collision and bodies colliding.
@@ -32,5 +36,36 @@ public class BodyIntersection {
 		this.intersections = intersections;
 		this.body1 = body1;
 		this.body2 = body2;
+	}
+	
+	/**
+	 * Calculates and returns the average bounciness of the collision by taking the average restitution of the intersecting faces
+	 * @return the restitution of the collision, taking in to account all colliding faces of both bodies
+	 */
+	public float getAverageRestitution(){
+		float totalRestitution = 0;
+		int totalFaces = 0;
+		for(PhysicsFaceIntersection intersection : intersections){
+			totalRestitution += intersection.face1.restitution + intersection.face2.restitution;
+			totalFaces += 2;
+		}
+		return totalRestitution/totalFaces;
+	}
+	
+	/**
+	 * Calculates and returns the average point of impact of the collision. This averages out all the points where the two bodies
+	 * are intersecting and returns that point.
+	 * @return the point of intersection for the two bodies
+	 */
+	public Point getAverageImpactPoint(){
+		Vector totalPoint = Vector.ZERO_VECTOR;
+		int numOfPoints = 0;
+		for(FaceIntersection intersection : intersections){
+			for(Point p : intersection.points){
+				totalPoint = Vector.addVectors(totalPoint, p.toVector());
+				numOfPoints++;
+			}
+		}
+		return new Point(Point.ORIGIN, Vector.multiplyVectorByScalar(totalPoint, 1/numOfPoints));
 	}
 }

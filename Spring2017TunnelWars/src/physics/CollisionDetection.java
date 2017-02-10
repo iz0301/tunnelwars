@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * A class to contain static methods for collision detection
- * NOTE: uses ArrayLists which are slow, should change to just arrays.
+ * NOTE: uses ArrayLists which are slow, should change to just arrays(?).
  * @author Isaac Zachmann
  *
  */
@@ -19,8 +19,6 @@ public class CollisionDetection {
 	 */
 	public static final int GLOBAL_REGION = 1000;
 
-
-
 	/**
 	 * Runs the first and stage of collision detection. In this stages groups of bodies are returned if they are in the same global region of
 	 * GLOBAL_REGION by GLOBAL_REGION by GLOBAL_REGION units. 
@@ -29,11 +27,11 @@ public class CollisionDetection {
 	 * @return bodies that are in the same global region
 	 */
 	public static List<BodyBox[]> stage1(List<PhysicsBody> bodies){
-		ArrayList<BodyBox> bodyBoxes = new ArrayList<BodyBox>();
+		List<BodyBox> bodyBoxes = new ArrayList<BodyBox>();
 		for(PhysicsBody b : bodies){
 			bodyBoxes.add(new BodyBox(b));
 		}
-		ArrayList<BodyBox[]> returnVal = new ArrayList<BodyBox[]>();
+		List<BodyBox[]> returnVal = new ArrayList<BodyBox[]>();
 		returnVal.add(bodyBoxes.toArray(new BodyBox[bodyBoxes.size()]));
 		return returnVal;
 	}

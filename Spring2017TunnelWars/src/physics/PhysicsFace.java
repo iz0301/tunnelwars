@@ -12,12 +12,13 @@ public class PhysicsFace extends Face{
 	/**
 	 * The friction of this face
 	 */
-	public double friction = .2;
+	public float friction = .2f;
 
 	/**
-	 * The restitution or bounciness of the face. Expressed as a double between 0 and 1.
+	 * The restitution or bounciness of the face. Expressed as a float between 0 and 1. 
+	 * Represents the fraction of kinetic energy conserved during a collision. 
 	 */
-	public double restitution = .2;
+	public float restitution = .2f;
 
 	/**
 	 * The strength of the face in pascals (N/m^2). If this pressure is reached the face will break.

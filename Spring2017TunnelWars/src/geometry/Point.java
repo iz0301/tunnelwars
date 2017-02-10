@@ -10,6 +10,12 @@ import math.Vector;
  *
  */
 public class Point {
+	
+	/**
+	 * Just a point at the origin, (0,0,0)
+	 */
+	public static final Point ORIGIN = new Point(0,0,0);
+	
 	/**
 	 * The x-coordinate of the point
 	 */
@@ -126,6 +132,16 @@ public class Point {
 		}
 	}
 
+	/**
+	 * Creates a vector with an x, y, and z component the same as the x, y, and z components of this point.
+	 * Useful for doing math with points.
+	 * Another way to think about it is creating a vector from the origin to this point.
+	 * @return the vector with the same x, y, z of this point
+	 */
+	public Vector toVector(){
+		return new Vector(x, y, z);
+	}
+	
 	/**
 	 * Fraction of error to assume a point is still collinear with the other two in the isPointBetween function.
 	 */
