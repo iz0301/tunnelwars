@@ -2,10 +2,8 @@ package physics;
 
 import geometry.Face;
 import geometry.FaceIntersection;
-import geometry.Point;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -66,20 +64,20 @@ public class CollisionDetection {
 	 * @return a list of all the intersections of the input bodies
 	 */
 	public static List<BodyIntersection> stage3(List<BodyBox[]> intersecting){
-		List<BodyIntersection> intersections = new ArrayList<BodyIntersection>();
+		List<BodyIntersection> bodyIntersections = new ArrayList<BodyIntersection>();
 		for(BodyBox[] b : intersecting){
-			List<FaceIntersection> intersectingFaces = new ArrayList<FaceIntersection>();
-			FaceIntersection newIntersection;
+			List<PhysicsFaceIntersection> faceIntersections = new ArrayList<PhysicsFaceIntersection>();
+			FaceIntersection newFaceIntersection;
 			for(PhysicsFace face1 : b[0].getBody().faces){
 				for(PhysicsFace face2 : b[1].getBody().faces){
-					if((newIntersection = Face.doFacesIntersect(face1, face2)) != null){
-						intersectingFaces.addAll(Arrays.asList(newIntersection));
+					if((newFaceIntersection = Face.doFacesIntersect(face1, face2)) != null){
+						faceIntersections.add(new PhysicsFaceIntersection(newFaceIntersection));
 					}
 				}
 			}
-			intersections.add(new BodyIntersection(intersectingFaces.toArray(new PhysicsFaceIntersection[0]), b[0].getBody(), b[1].getBody()));
+			bodyIntersections.add(new BodyIntersection(faceIntersections.toArray(new PhysicsFaceIntersection[0]), b[0].getBody(), b[1].getBody()));
 		}
-		return intersections;
+		return bodyIntersections;
 	}
 	/*Below is old way for 3, not really sure how its supposed to work but dont think it does
 	//look for intersection by all three sides on both bodies

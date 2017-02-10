@@ -63,7 +63,7 @@ public class PhysicsBody {
 	public boolean floor;
 
 	/**
-	 * The current position of the center of mass of the body relative to the origin
+	 * The current position of the (center of mass?) of the body relative to the origin
 	 */
 	public Point position;
 
@@ -93,8 +93,8 @@ public class PhysicsBody {
 	Vector angularAcceleration = Vector.ZERO_VECTOR;
 
 	/**
-	 * The center of mass of this object. All objects have uniform density. This should be equal to the position.
-	 */
+	 * The center of mass of this object. All objects have uniform density. This should be equal to the position.?
+	 **/
 	public Point centroid;
 
 	/**
@@ -160,10 +160,11 @@ public class PhysicsBody {
 	 * @param change the vector to move the body
 	 */
 	public void move(Vector change){
-		position = new Point(position.x+change.getX(), position.y+change.getY(), position.z+change.getZ());
+		position = new Point(position, change);
+		centroid = new Point(centroid, change);
 		for(PhysicsFace f : faces){
 			for(Point p : f.getPoints()){
-				p = new Point(p.x+change.getX(), p.y+change.getY(), p.z+change.getZ());
+				p = new Point(p, change);
 			}
 		}
 	}
@@ -173,7 +174,7 @@ public class PhysicsBody {
 	 * @param change
 	 */
 	public void rotate(Vector change){
-		rotation = new Point(rotation.x+change.getX(), rotation.y+change.getY(), rotation.z+change.getZ());
+		rotation = new Point(rotation, change);
 		for(PhysicsFace f : faces){
 			for(Point p : f.getPoints()){
 				//Rotate around z, then x, then y axis: https://www.siggraph.org/education/materials/HyperGraph/modeling/mod_tran/3drota.htm
@@ -199,8 +200,9 @@ public class PhysicsBody {
 	 */
 	public boolean isPointInBody(Point point){
 		int numberOfFaceIntersections = 0;
+		Ray testRay = new Ray(point, new Vector(1,0,0));
 		for(PhysicsFace face : faces){
-			if(new Ray(point, new Vector(1,0,0)).intersectsFace(face) != null){ //Direction dont matter, can be any direction for a closed object
+			if(testRay.intersectsFace(face) != null){ //Direction dont matter, can be any direction for a closed object
 				numberOfFaceIntersections++;
 			}
 		}
@@ -294,7 +296,7 @@ public class PhysicsBody {
 		centroid = new Point(totalX/CENTROID_ACCURACY, 
 				totalY/CENTROID_ACCURACY, 
 				totalZ/CENTROID_ACCURACY);
-		position = centroid;
+		//position = centroid;
 		//calc Moment of inertias for x, y, and z axis
 		float massOfOnePoint = mass/CENTROID_ACCURACY;
 		Ray xAxis = new Ray(centroid, new Vector(1,0,0));

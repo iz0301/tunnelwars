@@ -1,6 +1,5 @@
 package physics;
 
-import geometry.Point;
 
 /**
  * Class for collision detection. Holds information once a collision is verified such as point of collision and bodies colliding.

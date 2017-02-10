@@ -3,8 +3,6 @@ package physics;
 import geometry.Face;
 import geometry.Point;
 
-import java.util.ArrayList;
-
 /**
  * A class that defines faces for physical interaction
  * @author Isaac Zachmann
@@ -15,18 +13,18 @@ public class PhysicsFace extends Face{
 	 * The friction of this face
 	 */
 	public double friction = .2;
-	
+
 	/**
 	 * The restitution or bounciness of the face. Expressed as a double between 0 and 1.
 	 */
 	public double restitution = .2;
-	
+
 	/**
 	 * The strength of the face in pascals (N/m^2). If this pressure is reached the face will break.
 	 * Or should this just be Newtons instead?
 	 */
 	public double strength = 100000;
-	
+
 	/**
 	 * Creates a new face with the specified points 
 	 * @param ptA The first point
@@ -44,21 +42,26 @@ public class PhysicsFace extends Face{
 	 */
 	public PhysicsFace(Face f) {
 		super(f.point1, f.point2, f.point3);
+		if(f instanceof PhysicsFace){
+			this.friction = ((PhysicsFace)f).friction;
+			this.restitution = ((PhysicsFace)f).restitution;
+			this.strength = ((PhysicsFace)f).strength;
+		}
 	}
 
 	/**
 	 * Changes the faces into physics faces
 	 * @param array
-	 * @return
+	 * @return the array of PhysicsFaces from the faces
 	 */
 	public static PhysicsFace[] generateFromFaces(Face[] array) {
-		ArrayList<PhysicsFace> physicsFaces = new ArrayList<PhysicsFace>();
-		for(Face f : array){
-			physicsFaces.add(new PhysicsFace(f));
+		PhysicsFace[] physicsFaces = new PhysicsFace[array.length];
+		for(int i = 0; i < array.length; i++){
+			physicsFaces[i] = new PhysicsFace(array[i]);
 		}
-		return physicsFaces.toArray(new PhysicsFace[physicsFaces.size()]);
+		return physicsFaces;
 	}
-	
+
 
 	/*
 	/**

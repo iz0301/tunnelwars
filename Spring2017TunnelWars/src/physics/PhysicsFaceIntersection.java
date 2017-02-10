@@ -40,7 +40,9 @@ public class PhysicsFaceIntersection extends FaceIntersection {
 	 * @param faceIntersection the generic FaceIntersection to create a PhysicsFaceIntersection out of.
 	 */
 	public PhysicsFaceIntersection(FaceIntersection faceIntersection) {
-		
+		super(faceIntersection.points, new PhysicsFace(faceIntersection.face1), new PhysicsFace(faceIntersection.face2));
+		this.face1 = new PhysicsFace(faceIntersection.face1);
+		this.face2 = new PhysicsFace(faceIntersection.face2);
 	}
 	
 	/**
@@ -49,7 +51,11 @@ public class PhysicsFaceIntersection extends FaceIntersection {
 	 * @return the array of PhysicsFaceIntersections created forom the FaceIntersections
 	 * @see {@link #PhysicsFaceIntersection(FaceIntersection)}
 	 */
-	public static PhysicsFaceIntersection[] constructPhysicFaces(FaceIntersection[] faceIntersections){
-		for()
+	public static PhysicsFaceIntersection[] constructPhysicsFaceIntersections(FaceIntersection[] faceIntersections){
+		PhysicsFaceIntersection[] physicsFaceIntersections = new PhysicsFaceIntersection[faceIntersections.length];
+		for(int i = 0; i < faceIntersections.length; i++){
+			physicsFaceIntersections[i] = new PhysicsFaceIntersection(faceIntersections[i]);
+		}
+		return physicsFaceIntersections;
 	}
 }
