@@ -28,7 +28,7 @@ public class CollisionDetection {
 	 * @param bodies bodies to test the intersection
 	 * @return bodies that are in the same global region
 	 */
-	public static ArrayList<BodyBox[]> stage1(ArrayList<PhysicsBody> bodies){
+	public static List<BodyBox[]> stage1(List<PhysicsBody> bodies){
 		ArrayList<BodyBox> bodyBoxes = new ArrayList<BodyBox>();
 		for(PhysicsBody b : bodies){
 			bodyBoxes.add(new BodyBox(b));
@@ -44,8 +44,8 @@ public class CollisionDetection {
 	 * @param bodies the physics bodies to test (result from stage1)
 	 * @return the body boxes of objects that could be colliding. Returns an array of arrays, each has 2 boxes that are intersecting
 	 */
-	public static ArrayList<BodyBox[]> stage2(ArrayList<BodyBox[]> boxes){
-		ArrayList<BodyBox[]> intersecting = new ArrayList<BodyBox[]>();
+	public static List<BodyBox[]> stage2(List<BodyBox[]> boxes){
+		List<BodyBox[]> intersecting = new ArrayList<BodyBox[]>();
 		for(BodyBox[] tests : boxes){
 			for(BodyBox b1 : tests){
 				for(BodyBox b2 : tests){
