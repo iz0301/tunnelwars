@@ -44,6 +44,7 @@ public class PhysicsBody {
 	/**
 	 * The moment of inertia around the local x, y, and z axes in kg*m^2
 	 * Calculated when getMomentOfInertia() is called
+	 * NOTE: When doing math with momentOfInerta, you will usually want to use element by element multiplication.
 	 */
 	public Vector momentOfInertia;
 
@@ -127,7 +128,7 @@ public class PhysicsBody {
 	public void applyForce(Force newForce){
 		forces.add(newForce.force);
 		//T=R x F (wikipidia)
-		torques.add(Vector.corssMultiply(new Vector(new Point(0,0,0), newForce.position), newForce.force));//center to vector in local coords
+		torques.add(Vector.corssMultiply(new Vector(centroid, newForce.position), newForce.force));//center to vector in local coords
 		times.add(newForce.time);
 	}
 

@@ -1,5 +1,7 @@
 package physics;
 
+import geometry.Point;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,7 +92,7 @@ public class PhysicsEngine {
 								acceleration, 
 								(float)(.5*Math.pow(timeBetween,2)
 										));
-						
+
 						//set for present
 						body.acceleration = new_acceleration; //set new accel
 						body.linearVelocity = Vector.addVectors(body.linearVelocity, dVel);//velocity = oldVelocity + acceleration * time
@@ -100,8 +102,8 @@ public class PhysicsEngine {
 						futureBodies.get(index).acceleration = body.acceleration;
 						futureBodies.get(index).linearVelocity = body.linearVelocity;
 						futureBodies.get(index).position = body.position;
-						
-							//accleration is constant so not here
+
+						//accleration is constant so not here
 						futureBodies.get(index).linearVelocity = Vector.addVectors(body.linearVelocity, dVel);//adding dVel again, that way future is ahead
 						futureBodies.get(index).move(dPos);//move again, same amount.
 					}
@@ -129,28 +131,70 @@ public class PhysicsEngine {
 				//APPLY FORCES FROM INTERSECTION
 				PhysicsBody pB1 = bodies.get(futureBodies.indexOf(intersection.body1));//pB1 for presentBody1. pB1 and intersection.body1 are the same, but intersection.body1 is one tick ahead
 				PhysicsBody pB2 = bodies.get(futureBodies.indexOf(intersection.body2));
-				Vector m1in = new Vector(pB1.position, intersection.body1.position);//motion of body 1 into the collision
-				Vector m2in = new Vector(pB2.position, intersection.body2.position);
+
+				Vector m1in = Vector.multiplyVectorByScalar(new Vector(pB1.position, intersection.body1.position), 1/timeBetween);//average velocity of body 1 into the collision
+				Vector m2in = Vector.multiplyVectorByScalar(new Vector(pB2.position, intersection.body2.position), 1/timeBetween);
 				//p=mv
 				Vector p1in = Vector.multiplyVectorByScalar(m1in, pB1.mass);
 				Vector p2in = Vector.multiplyVectorByScalar(m2in, pB2.mass);
 				Vector tP = Vector.addVectors(p1in, p2in);//tP = total momentum
-				float KEin = (.5f*pB1.mass*pB1.linearVelocity.getMagnitude()*pB1.linearVelocity.getMagnitude()) +
-						(.5f*pB2.mass*pB2.linearVelocity.getMagnitude()*pB2.linearVelocity.getMagnitude()); 
-				float KEout = intersection.getAverageRestitution()*KEin;
-				//Math is hard... I think i found that: 
-				//0=(m2*m1+m1^2)*v1o^2+(-2pt*m1)*v1o+(pt^2-m2*2*KEout)
-				//where v1o is out velocity of object 1, pt is total momentum, m1 and m2 are masses
-				//so use quad formula where v1o is x
-				float a = pB2.mass*pB1.mass+pB1.mass*pB1.mass;//(m2*m1+m1^2)
-				Vector b = Vector.multiplyVectorByScalar(tP, -2*pB1.mass);//(-2pt*m1)
-				float c = tP.getMagnitude()*tP.getMagnitude() - pB2.mass*2*KEout;//(pt^2-m2*2*KEout)
-				Vector v1o1 = Vector.multiplyVectorByScalar(Vector.addVectors(Vector.multiplyVectorByScalar(b, -1), ,2*a);//(-b+-sqrt(b^2-4ac))/(2a)    two possibilities
-				Vector v1o2
+				float R = intersection.getAverageRestitution();
+				Point poi = intersection.getAverageImpactPoint();
+				//Math is hard... I think i found: http://physics.tutorvista.com/momentum/inelastic-collision.html
+				Vector v1o = 
+						Vector.multiplyVectorByScalar(
+								Vector.addVectors(
+										Vector.multiplyVectorByScalar(
+												Vector.subtractVectors(
+														p2in, 
+														Vector.multiplyVectorByScalar(m1in, pB2.mass)), 
+														R), 
+														tP), 
+														1/(pB1.mass+pB2.mass));
+				Vector v2o = 
+						Vector.multiplyVectorByScalar(
+								Vector.addVectors(
+										Vector.multiplyVectorByScalar(
+												Vector.subtractVectors(
+														Vector.multiplyVectorByScalar(m1in, pB2.mass), 
+														p2in), 
+														R), 
+														tP), 
+														1/(pB1.mass+pB2.mass));
+				pB1.applyForce(new Force(Vector.multiplyVectorByScalar(Vector.subtractVectors(v1o, m1in), pB1.mass/timeBetween), timeBetween, poi));
+				pB2.applyForce(new Force(Vector.multiplyVectorByScalar(Vector.subtractVectors(v2o, m2in), pB2.mass/timeBetween), timeBetween, poi));//F=ma a=v/t F=mv/t F=vm/t
 				
 				
-				Vector r1in = new Vector(pB1.rotation, intersection.body1.rotation);//rotation of body 1 into the collision
-				Vector r2in = new Vector(pB2.rotation, intersection.body2.rotation);
+				//Do we actually need to calculate this rotation stuff? IDK
+				Vector r1in = Vector.multiplyVectorByScalar(new Vector(pB1.rotation, intersection.body1.rotation), 1/timeBetween);//rotation of body 1 into the collision
+				Vector r2in = Vector.multiplyVectorByScalar(new Vector(pB2.rotation, intersection.body2.rotation), 1/timeBetween);
+				Vector L1in = Vector.elementMultiply(r1in, pB1.momentOfInertia);
+				Vector L2in = Vector.elementMultiply(r2in, pB2.momentOfInertia);
+				Vector tL = Vector.addVectors(L1in, L2in);
+				Vector w1o = 
+						Vector.elementDivide(
+								Vector.addVectors(
+										Vector.multiplyVectorByScalar(
+												Vector.subtractVectors(
+														L2in, 
+														Vector.elementMultiply(r1in, pB2.momentOfInertia)), 
+														R), 
+														tL), 
+														Vector.addVectors(pB1.momentOfInertia, pB2.momentOfInertia));
+				Vector w2o = 
+						Vector.elementDivide(
+								Vector.addVectors(
+										Vector.multiplyVectorByScalar(
+												Vector.subtractVectors(
+														Vector.elementMultiply(r1in, pB2.momentOfInertia),
+														L2in), 
+														R), 
+														tL), 
+														Vector.addVectors(pB1.momentOfInertia, pB2.momentOfInertia));
+				//THIS ISNT quite RIGHT!!!!:
+				//pB1.applyForce(new Force(Vector.elementMultiply(Vector.subtractVectors(w1o, r1in), Vector.multiplyVectorByScalar(pB1.momentOfInertia,1/timeBetween)), timeBetween, poi));
+				//pB2.applyForce(new Force(Vector.elementMultiply(Vector.subtractVectors(w2o, r2in), Vector.multiplyVectorByScalar(pB2.momentOfInertia,1/timeBetween)), timeBetween, poi));//F=ma a=v/t F=mv/t F=vm/t
+
 			}
 		}
 		lastTime = System.currentTimeMillis();
