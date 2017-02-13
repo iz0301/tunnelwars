@@ -46,7 +46,7 @@ public class PhysicsBody {
 	 * Calculated when getMomentOfInertia() is called
 	 * NOTE: When doing math with momentOfInerta, you will usually want to use element by element multiplication.
 	 */
-	public Vector momentOfInertia;
+	public Vector momentOfInertia = Vector.ZERO_VECTOR;
 
 	/**
 	 * The mass in kilograms of the physics body
@@ -66,12 +66,12 @@ public class PhysicsBody {
 	/**
 	 * The current position of the (center of mass?) of the body relative to the origin
 	 */
-	public Point position;
+	public Point position = Point.ORIGIN;
 
 	/**
 	 * The current orientation of the physics body relative to the origin axes. Represented as a point because somehow???
 	 */
-	public Point rotation;
+	public Point rotation = Point.ORIGIN;
 
 	/**
 	 * The current linear velocity of the physics body
@@ -96,7 +96,7 @@ public class PhysicsBody {
 	/**
 	 * The center of mass of this object. All objects have uniform density. This should be equal to the position.?
 	 **/
-	public Point centroid;
+	public Point centroid = Point.ORIGIN;
 
 	/**
 	 * Creates a physics body using the specified faces
@@ -303,6 +303,7 @@ public class PhysicsBody {
 		Ray xAxis = new Ray(centroid, new Vector(1,0,0));
 		Ray yAxis = new Ray(centroid, new Vector(0,1,0));
 		Ray zAxis = new Ray(centroid, new Vector(0,0,1));
+		momentOfInertia = Vector.ZERO_VECTOR;
 		for(Point p : inBody){//mr^2
 			momentOfInertia = Vector.addVectors(momentOfInertia, new Vector(
 					(float)(massOfOnePoint*Math.pow(xAxis.distanceFromPointToLine(p), 2)),
