@@ -66,6 +66,6 @@ public class BodyIntersection {
 				numOfPoints++;
 			}
 		}
-		return new Point(Point.ORIGIN, Vector.multiplyVectorByScalar(totalPoint, 1/numOfPoints));
+		return new Point(Point.ORIGIN, Vector.multiplyVectorByScalar(totalPoint, 1f/numOfPoints));
 	}
 }

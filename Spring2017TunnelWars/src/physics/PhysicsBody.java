@@ -30,7 +30,7 @@ public class PhysicsBody {
 	 * An array list to store the remaining time for each torque/force
 	 */
 	ArrayList<Float> times = new ArrayList<Float>();
-	
+
 	/**
 	 * All the forces acting upon this body
 	 */
@@ -40,7 +40,7 @@ public class PhysicsBody {
 	 * All the torques acting upon this body
 	 */
 	ArrayList<Vector> torques = new ArrayList<Vector>();
-	
+
 	/**
 	 * The moment of inertia around the local x, y, and z axes in kg*m^2
 	 * Calculated when getMomentOfInertia() is called
@@ -65,13 +65,14 @@ public class PhysicsBody {
 
 	/**
 	 * The current position of the (center of mass?) of the body relative to the origin
+	 * NOTE: use move() function to set position to make sure faces move. Should make this private?
 	 */
-	public Point position = Point.ORIGIN;
+	private Point position = Point.ORIGIN;
 
 	/**
 	 * The current orientation of the physics body relative to the origin axes. Represented as a point because somehow???
 	 */
-	public Point rotation = Point.ORIGIN;
+	private Point rotation = Point.ORIGIN;
 
 	/**
 	 * The current linear velocity of the physics body
@@ -153,7 +154,23 @@ public class PhysicsBody {
 	 * @param pos The new middle position
 	 */
 	public void setPosition(Point pos){
-		move(new Vector(centroid, pos));
+		move(new Vector(position, pos));
+	}
+
+	/**
+	 * Returns the current position of the physics body
+	 * @return the position as a point
+	 */
+	public Point getPosition(){
+		return position;
+	}
+
+	/**
+	 * Returns the current rotation of the physics body
+	 * @return the rotation as a point
+	 */
+	public Point getRotation(){
+		return rotation;
 	}
 
 	/**
@@ -164,9 +181,9 @@ public class PhysicsBody {
 		position = new Point(position, change);
 		centroid = new Point(centroid, change);
 		for(PhysicsFace f : faces){
-			for(Point p : f.getPoints()){
-				p = new Point(p, change);
-			}
+			f.point1 = new Point(f.point1, change);
+			f.point2 = new Point(f.point2, change);
+			f.point3 = new Point(f.point3, change);
 		}
 	}
 
@@ -176,22 +193,51 @@ public class PhysicsBody {
 	 */
 	public void rotate(Vector change){
 		rotation = new Point(rotation, change);
+		Point originalCentroid = centroid;
+		this.move(new Vector(centroid, Point.ORIGIN));
 		for(PhysicsFace f : faces){
-			for(Point p : f.getPoints()){
 				//Rotate around z, then x, then y axis: https://www.siggraph.org/education/materials/HyperGraph/modeling/mod_tran/3drota.htm
-				p.x = (float) (p.x*Math.cos(change.getZ())-p.y*Math.sin(change.getZ()));
-				p.y = (float) (p.x*Math.sin(change.getZ())-p.y*Math.cos(change.getZ()));
-				p.z = p.z;
-				
-				p.y = (float) (p.y*Math.cos(change.getX())-p.z*Math.sin(change.getX()));
-				p.z = (float) (p.y*Math.sin(change.getX())+p.z*Math.cos(change.getX()));
-				p.x = p.x;
-				
-				p.z = (float) (p.z*Math.cos(change.getY())-p.x*Math.sin(change.getY()));
-				p.x = (float) (p.x*Math.sin(change.getY())+p.x*Math.cos(change.getY()));
-				p.y = p.y;
+			{
+				f.point1.x = (float) (f.point1.x*Math.cos(change.getZ())-f.point1.y*Math.sin(change.getZ()));
+				f.point1.y = (float) (f.point1.x*Math.sin(change.getZ())-f.point1.y*Math.cos(change.getZ()));
+				f.point1.z = f.point1.z;
+
+				f.point1.y = (float) (f.point1.y*Math.cos(change.getX())-f.point1.z*Math.sin(change.getX()));
+				f.point1.z = (float) (f.point1.y*Math.sin(change.getX())+f.point1.z*Math.cos(change.getX()));
+				f.point1.x = f.point1.x;
+
+				f.point1.z = (float) (f.point1.z*Math.cos(change.getY())-f.point1.x*Math.sin(change.getY()));
+				f.point1.x = (float) (f.point1.x*Math.sin(change.getY())+f.point1.x*Math.cos(change.getY()));
+				f.point1.y = f.point1.y;	
+			}
+			{
+				f.point2.x = (float) (f.point2.x*Math.cos(change.getZ())-f.point2.y*Math.sin(change.getZ()));
+				f.point2.y = (float) (f.point2.x*Math.sin(change.getZ())-f.point2.y*Math.cos(change.getZ()));
+				f.point2.z = f.point2.z;
+
+				f.point2.y = (float) (f.point2.y*Math.cos(change.getX())-f.point2.z*Math.sin(change.getX()));
+				f.point2.z = (float) (f.point2.y*Math.sin(change.getX())+f.point2.z*Math.cos(change.getX()));
+				f.point2.x = f.point2.x;
+
+				f.point2.z = (float) (f.point2.z*Math.cos(change.getY())-f.point2.x*Math.sin(change.getY()));
+				f.point2.x = (float) (f.point2.x*Math.sin(change.getY())+f.point2.x*Math.cos(change.getY()));
+				f.point2.y = f.point2.y;	
+			}
+			{
+				f.point3.x = (float) (f.point3.x*Math.cos(change.getZ())-f.point3.y*Math.sin(change.getZ()));
+				f.point3.y = (float) (f.point3.x*Math.sin(change.getZ())-f.point3.y*Math.cos(change.getZ()));
+				f.point3.z = f.point3.z;
+
+				f.point3.y = (float) (f.point3.y*Math.cos(change.getX())-f.point3.z*Math.sin(change.getX()));
+				f.point3.z = (float) (f.point3.y*Math.sin(change.getX())+f.point3.z*Math.cos(change.getX()));
+				f.point3.x = f.point3.x;
+
+				f.point3.z = (float) (f.point3.z*Math.cos(change.getY())-f.point3.x*Math.sin(change.getY()));
+				f.point3.x = (float) (f.point3.x*Math.sin(change.getY())+f.point3.x*Math.cos(change.getY()));
+				f.point3.y = f.point3.y;	
 			}
 		}
+		this.move(new Vector(Point.ORIGIN, originalCentroid));
 	}
 
 	/**
@@ -237,7 +283,7 @@ public class PhysicsBody {
 		}
 		return totalTorque;
 	}
-	
+
 	/**
 	 * Recalculates center of mass and moments of inertia for this physics body. Do this after changing mass, or density.
 	 */

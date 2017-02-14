@@ -2,6 +2,9 @@ package physics;
 
 import geometry.Point;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A class to put a box around a physics body. Used for collision detection.
  * @author Isaac Zachmann
@@ -16,12 +19,12 @@ public class BodyBox {
 	/**
 	 * the minimum point of the box; smallest x, y, and z
 	 */
-	public Point min = null;
+	private Point min = null;
 	
 	/**
 	 * the max point of the box; largest x, y, and z
 	 */
-	public Point max = null;
+	private Point max = null;
 	
 	/**
 	 * Creates a new box around the physics body
@@ -29,40 +32,46 @@ public class BodyBox {
 	 */
 	public BodyBox(PhysicsBody body){
 		this.body = body;
-		for(Object f : body.faces){
-			for(Object o : ((PhysicsFace) f).getPoints()){
-				Point p = (Point) o;
-				
-				if(min == null){
-					min = p;
-				}
-				if(max == null){
-					max = p;
-				}
-				
-				if(p.x < min.x){
-					min.x = p.x;
-				}
-				if(p.y < min.y){
-					min.y = p.y;
-				}
-				if(p.z < min.z){
-					min.z = p.z;
+		float sX = body.faces.get(0).point1.x;
+		float bX = body.faces.get(0).point1.x;//set to values that could actully exist rather than 0
+		float sY = body.faces.get(0).point1.y;
+		float bY = body.faces.get(0).point1.y;
+		float sZ = body.faces.get(0).point1.z;
+		float bZ = body.faces.get(0).point1.z;
+		for(PhysicsFace f : body.faces){
+			for(Point p : f.getPoints()){
+				if(p.x < sX){
+					sX = p.x;
+				} else if(p.x > bX){
+					bX = p.x;
 				}
 				
-				if(p.x > max.x){
-					max.x = p.x;
+				if(p.y < sY){
+					sY = p.y;
+				} else if(p.y > bY){
+					bY = p.y;
 				}
-				if(p.y > max.y){
-					max.y = p.y;
-				}
-				if(p.z > max.z){
-					max.z = p.z;
+				
+				if(p.z < sZ){
+					sZ = p.z;
+				} else if(p.z > bZ){
+					bZ = p.z;
 				}
 			}
 		}
+		min = new Point(sX, sY, sZ);
+		max = new Point(bX, bY, bZ);
 	}
 	
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof BodyBox){
+			if(((BodyBox)(o)).min.equals(this.min) && ((BodyBox)o).max.equals(this.max)){
+				return true;
+			}
+		}
+		return false;
+	}
 	/**
 	 * Gets the original physics body
 	 * @return the original physics body

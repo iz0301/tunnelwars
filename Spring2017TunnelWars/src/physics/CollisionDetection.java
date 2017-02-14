@@ -2,6 +2,7 @@ package physics;
 
 import geometry.Face;
 import geometry.FaceIntersection;
+import geometry.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class CollisionDetection {
 		for(BodyBox[] tests : boxes){
 			for(BodyBox b1 : tests){
 				for(BodyBox b2 : tests){
-					if(BodyBox.areBoxesIntersecting(b1, b2) && b1 != b2){
+					if(BodyBox.areBoxesIntersecting(b1, b2) && !b1.equals(b2)){
 						intersecting.add(new BodyBox[]{b1,b2});
 					}
 				}
@@ -73,7 +74,9 @@ public class CollisionDetection {
 					}
 				}
 			}
-			bodyIntersections.add(new BodyIntersection(faceIntersections.toArray(new PhysicsFaceIntersection[0]), b[0].getBody(), b[1].getBody()));
+			if(faceIntersections.size() > 0){
+				bodyIntersections.add(new BodyIntersection(faceIntersections.toArray(new PhysicsFaceIntersection[0]), b[0].getBody(), b[1].getBody()));
+			}
 		}
 		return bodyIntersections;
 	}
