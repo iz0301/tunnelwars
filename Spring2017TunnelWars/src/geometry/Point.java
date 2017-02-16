@@ -1,6 +1,7 @@
 package geometry;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import math.Vector;
 
@@ -81,15 +82,15 @@ public class Point {
 	 * Returns the point array list as a float buffer: an array of floats
 	 * where every 3 items is one point
 	 * Effectively the opposite of floatBufferToPoints.
-	 * @param pointArrayList the array list 
+	 * @param verticies the array list 
 	 * @return
 	 */
-	public static float[] pointFloatBuffer(ArrayList<Point> pointArrayList) {
+	public static float[] pointFloatBuffer(List<Point> verticies) {
 		ArrayList<Float> arrayVerticiesF = new ArrayList<Float>();
-		for (int i = 0; i < pointArrayList.size(); i++) {
-			arrayVerticiesF.add(pointArrayList.get(i).x);
-			arrayVerticiesF.add(pointArrayList.get(i).y);
-			arrayVerticiesF.add(pointArrayList.get(i).z);
+		for (int i = 0; i < verticies.size(); i++) {
+			arrayVerticiesF.add(verticies.get(i).x);
+			arrayVerticiesF.add(verticies.get(i).y);
+			arrayVerticiesF.add(verticies.get(i).z);
 		}
 		Float[] verticiesF = arrayVerticiesF.toArray(new Float[arrayVerticiesF.size()]);
 		float[] lowerCaseFloat = new float[verticiesF.length];

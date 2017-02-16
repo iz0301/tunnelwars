@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class to read wavefront obj files (.obj) and store them as their points faces, etc.
@@ -15,9 +16,9 @@ import java.util.ArrayList;
  */
 public class ObjectImporter {
 	
-	public static ArrayList<Point> verticies = new ArrayList<Point>();
-	public ArrayList<Face> faces = new ArrayList<Face>();
-	public ArrayList<Integer> arrayIndicies = new ArrayList<Integer>();
+	public static List<Point> verticies = new ArrayList<Point>();
+	public List<Face> faces = new ArrayList<Face>();
+	public List<Integer> arrayIndicies = new ArrayList<Integer>();
 	public static float[] floatVerticies = null;
 	public static int[] indicies = null;
 	/**
@@ -25,11 +26,11 @@ public class ObjectImporter {
 	 * @param ArrayList<Integers>
 	 * @return int[]
 	 */
-	public static int[] listToArray(ArrayList<Integer> integers) {
-		int[] ret = new int[integers.size()];
+	public static int[] listToArray(List<Integer> arrayIndicies2) {
+		int[] ret = new int[arrayIndicies2.size()];
 	    for (int i=0; i < ret.length; i++)
 	    {
-	        ret[i] = integers.get(i).intValue();
+	        ret[i] = arrayIndicies2.get(i).intValue();
 	    }
 		return ret;
 	}
