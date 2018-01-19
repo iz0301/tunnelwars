@@ -227,4 +227,12 @@ public class Vector {
 	public String toString(){
 		return "<"+xComponent+", "+yComponent+", "+zComponent+">";
 	}
+
+	/**
+	 * Creates a new point with the same components as this vector
+	 * @return A new point with the components of this vector as x, y, and z
+	 */
+	public Point toPoint() {
+		return new Point(xComponent, yComponent, zComponent);
+	}
 }
